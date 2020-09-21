@@ -41,13 +41,14 @@ public class ConsultaCEPTest {
 
 		RestAssured.baseURI = url; // Setando a URL
 
-		Response response = initRequest(ContentType.JSON, header)
-				.when()
-				.get(endpoint)
-				.then()
-				.statusCode(200)
-				.extract()
-				.response();
+		Response response = initRequest(ContentType.JSON)
+			.headers(header)
+			.when()
+			.get(endpoint)
+			.then()
+			.statusCode(200)
+			.extract()
+			.response();
 		
 		JsonPath json = response.getBody().jsonPath();
 		
@@ -83,19 +84,25 @@ public class ConsultaCEPTest {
 		assertEquals("Salvador", json.get("localidade"));
 	}
 	
-	public RequestSpecification initRequest(ContentType contentType, LinkedHashMap<String, String>header) {
-		return RestAssured.given().relaxedHTTPSValidation().contentType(contentType).headers(header);
+	//public RequestSpecification initRequest(ContentType contentType, LinkedHashMap<String, String>header) {
+		//return RestAssured.given().relaxedHTTPSValidation().contentType(contentType).headers(header);
 		
-	}
+	//}
 	
 	public RequestSpecification initRequest(ContentType contentType) {
-		return RestAssured.given().relaxedHTTPSValidation().contentType(contentType);
+		return RestAssured.given()
+			.relaxedHTTPSValidation()
+			.contentType(contentType);
 		
 	}
 	
 	public Response get(String endpoint) {
-		return initRequest(ContentType.JSON).when().get(endpoint)
-		.then().extract().response();
+		return initRequest(ContentType.JSON)
+			.when()
+			.get(endpoint)
+		        .then()
+			.extract()
+			.response();
 	}
 
 }
